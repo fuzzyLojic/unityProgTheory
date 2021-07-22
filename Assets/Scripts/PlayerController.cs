@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         
         yRotation += horizontalLook * lookSpeed;
 
-        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
 }
