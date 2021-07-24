@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NugController : Tool
+public class NugController : Tool //INHERITENCE
 {
     Transform toolTransform;
 
@@ -22,6 +22,7 @@ public class NugController : Tool
 
     private bool inMotion;
 
+    // POLYMORPHISM
     protected override void ActionOne(){
         if(inMotion){
             StopAllCoroutines();

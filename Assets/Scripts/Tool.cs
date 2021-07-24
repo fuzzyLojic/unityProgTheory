@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Tool : MonoBehaviour
+public abstract class Tool : MonoBehaviour  // ABSTRACTION
 {
     protected Rigidbody rb;
     protected GameObject cam;
@@ -41,6 +41,7 @@ public abstract class Tool : MonoBehaviour
         }
     }
 
+    // ABSTRACTION
     protected abstract void ActionOne();
 
     protected virtual void ActionTwo(){

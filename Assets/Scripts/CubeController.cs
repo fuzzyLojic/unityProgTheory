@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeController : Tool
+public class CubeController : Tool  //INHERITENCE
 {
     Transform toolTransform;
     Quaternion startRotation;
@@ -15,6 +15,7 @@ public class CubeController : Tool
 
     private bool inMotion;
 
+    // POLYMORPHISM
     protected override void ActionOne()
     {
         if(inMotion){

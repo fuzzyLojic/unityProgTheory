@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WandController : Tool
+public class WandController : Tool //INHERITENCE
 {
     Transform toolTransform;
     Quaternion startRotation;
@@ -13,6 +13,7 @@ public class WandController : Tool
 
     private bool inMotion;
 
+    // POLYMORPHISM
     protected override void ActionOne()
     {
         if(inMotion){   // resets motion if it was already going
