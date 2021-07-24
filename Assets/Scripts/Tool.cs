@@ -9,8 +9,8 @@ public abstract class Tool : MonoBehaviour
     protected Collider col;
     [SerializeField] protected float throwForce = 10.0f;
 
-    [SerializeField] protected bool inPossession;
-    public bool canPickUp;
+    [SerializeField] protected bool isHeld;
+    public bool canBeHeld;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -18,21 +18,25 @@ public abstract class Tool : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         cam = GameObject.Find("Main Camera");
         col = gameObject.GetComponent<Collider>();
-        inPossession = transform.parent != GameObject.Find("Tool").transform ? false : true;
+        isHeld = transform.parent != GameObject.Find("Tool").transform ? false : true;
+        if(isHeld){
+            rb.isKinematic = true;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(inPossession && Input.GetMouseButtonDown(0)){
+        if(isHeld && Input.GetMouseButtonDown(0)){
             ActionOne();
         }
 
-        if(inPossession && Input.GetMouseButtonDown(1)){
+        if(isHeld && Input.GetMouseButtonDown(1)){
             ActionTwo();
         }
 
-        if(!inPossession && canPickUp){
+        if(!isHeld && canBeHeld){
             PickUp();
         }
     }
@@ -48,17 +52,10 @@ public abstract class Tool : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             var tool = GameObject.Find("Tool");
-            foreach (Transform child in tool.transform)
-            {
-                Tool tempTool;
-                child.gameObject.TryGetComponent<Tool>(out tempTool);
-                if(tempTool != null){
-                    tempTool.Release();
-                }
-            }
-
+            DropItems(tool);
             transform.SetParent(tool.transform);
-            inPossession = true;
+
+            isHeld = true;
             rb.isKinematic = true;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -67,17 +64,28 @@ public abstract class Tool : MonoBehaviour
     }
 
     protected void Release(){
-        rb.isKinematic = false;
+        isHeld = false;
         transform.parent = null;
+        rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.None;
-        inPossession = false;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+    }
+
+    protected void DropItems(GameObject tool){
+        foreach (Transform child in tool.transform)
+        {
+            Tool tempTool;
+            child.gameObject.TryGetComponent<Tool>(out tempTool);
+            if(tempTool != null){
+                tempTool.Release();
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision other) {
         if(other.gameObject == GameObject.Find("Player")){
             Debug.Log("other is player");
-            canPickUp = true;
+            canBeHeld = true;
         }
         else if(other.gameObject == GameObject.Find("Ground")){
             rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
@@ -87,7 +95,7 @@ public abstract class Tool : MonoBehaviour
 
     private void OnCollisionExit(Collision other) {
         if(other.gameObject == GameObject.Find("Player")){
-            canPickUp = false;
+            canBeHeld = false;
         }
     }
 }

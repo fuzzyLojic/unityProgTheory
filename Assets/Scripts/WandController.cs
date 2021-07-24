@@ -11,9 +11,6 @@ public class WandController : Tool
 
     [SerializeField] float duration = 3.0f;
 
-    Vector3 axis = new Vector3(70, -20, 0);
-    Vector3 point = new Vector3(70, -40, 0);
-
     private bool inMotion;
 
     protected override void ActionOne()
@@ -35,6 +32,10 @@ public class WandController : Tool
         StartCoroutine(SwishAndFlick());
     }
 
+    /// <summary>
+    /// This did not turn out how I wanted but time to move on
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SwishAndFlick(){
         float time = 0f; 
 
